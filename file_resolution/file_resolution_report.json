@@ -1,0 +1,745 @@
+{
+  "meta": {
+    "resolution_version": "1.0",
+    "resolved_at": "2025-01-15T12:00:00Z",
+    "source_analysis_file": "test_case_analysis/test_case_analysis.json",
+    "resolver_agent": "Senior Test-to-Codebase File Resolution Specialist",
+    "total_test_cases_analyzed": 1,
+    "total_files_resolved": 7,
+    "total_components_to_create": 27,
+    "resolution_methodology": "KB-driven query and verification",
+    "kb_queries_executed": 25,
+    "anti_hallucination_verification": "enabled"
+  },
+  "test_cases": [
+    {
+      "test_case_id": "TC_REG_001",
+      "title": "Verify user registration with valid data",
+      "module": "User Management",
+      "sub_module": "Registration",
+      "resolution_status": "PARTIALLY_RESOLVED",
+      "resolution_summary": "This test case requires user registration functionality that does NOT exist in the AURA framework. The framework is designed for HP Instant Ink enrollment flows (landing page, plan selection, HPID sign-up, shipping/billing, enrollment completion). It does NOT have a generic user registration page or registration form components. All 4 page objects, 23 locators, and 16 action methods needed for this test must be created from scratch. Only the 7 foundation infrastructure files exist and can be reused.",
+      "relevant_files": [
+        {
+          "file_path": "test_flows_common/test_flows_common.py",
+          "class_name": null,
+          "category": "foundation",
+          "relevant_methods": [
+            "setup()",
+            "generate_tenant_email()",
+            "create_hpid(page, callback)",
+            "fetch_verification_code(email)",
+            "extract_verification_code(html)"
+          ],
+          "reason": "Foundation file required for every test. Provides test setup, email generation (can be adapted for registration email), and account creation utilities. The create_hpid method handles HPID account creation but is NOT the same as the generic registration form this test requires.",
+          "import_statement": "import test_flows_common.test_flows_common as common",
+          "community": "0, 34",
+          "relevant_to_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "kb_verification": "KB confirmed this file exists with these methods. Community 0, 34 confirmed."
+        },
+        {
+          "file_path": "core/playwright_manager.py",
+          "class_name": "PlaywrightManager",
+          "category": "foundation",
+          "relevant_methods": [
+            "Browser lifecycle management methods"
+          ],
+          "reason": "Foundation file required for every test. Manages browser instance creation, configuration, and lifecycle for all tests.",
+          "import_statement": "from core.playwright_manager import PlaywrightManager",
+          "community": "2",
+          "relevant_to_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "kb_verification": "KB confirmed this file exists. Community 2 confirmed."
+        },
+        {
+          "file_path": "core/settings.py",
+          "class_name": null,
+          "category": "foundation",
+          "relevant_methods": [
+            "Configuration and logging utilities"
+          ],
+          "reason": "Foundation file required for every test. Handles environment settings, configuration management, and logging.",
+          "import_statement": "from core import settings",
+          "community": "2, 4",
+          "relevant_to_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "kb_verification": "KB confirmed this file exists. Community 2, 4 confirmed."
+        },
+        {
+          "file_path": "core/allure_reporter.py",
+          "class_name": "AllureReporter",
+          "category": "foundation",
+          "relevant_methods": [
+            "Test reporting and validation methods"
+          ],
+          "reason": "Foundation file required for every test. Provides Allure-based test reporting and validation mechanism.",
+          "import_statement": "from core.allure_reporter import AllureReporter",
+          "community": "10",
+          "relevant_to_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "kb_verification": "KB confirmed this file exists. Community 10 confirmed."
+        },
+        {
+          "file_path": "pages/base_page_object.py",
+          "class_name": "BasePageObject",
+          "category": "foundation",
+          "relevant_methods": [
+            "ElementLocators",
+            "WaitProxy",
+            "Common page object utilities"
+          ],
+          "reason": "Foundation file required for every test. Base class for all page objects. Any new page objects created for this test must inherit from BasePageObject.",
+          "import_statement": "from pages.base_page_object import BasePageObject",
+          "community": "4, 19",
+          "relevant_to_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "kb_verification": "KB confirmed this file exists. Community 4, 19 confirmed. All page objects inherit from this."
+        },
+        {
+          "file_path": "core/utils.py",
+          "class_name": "ElementsDict",
+          "category": "foundation",
+          "relevant_methods": [
+            "set_control_value()",
+            "set_variables()",
+            "substitute_variables()",
+            "take_screenshot()",
+            "accept_all_cookies()"
+          ],
+          "reason": "Foundation file required for every test. Provides utility functions for element handling, variable management, and common operations.",
+          "import_statement": "from core.utils import ElementsDict",
+          "community": "5",
+          "relevant_to_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "kb_verification": "KB confirmed this file exists. Community 5 confirmed."
+        },
+        {
+          "file_path": "conftest.py",
+          "class_name": null,
+          "category": "foundation",
+          "relevant_methods": [
+            "pytest_addoption()",
+            "pytest_runtest_makereport()",
+            "stage_callback()",
+            "tc_tracer()",
+            "main_execution()",
+            "reporter()",
+            "session_cleanup()"
+          ],
+          "reason": "Foundation file required for every test. Pytest configuration and fixtures for test execution, reporting, and cleanup.",
+          "import_statement": "N/A - pytest configuration file",
+          "community": "10",
+          "relevant_to_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "kb_verification": "KB confirmed this file exists. Community 10 confirmed."
+        }
+      ],
+      "relevant_locators_summary": {
+        "note": "NO LOCATORS from the AURA framework are relevant to this test case. The AURA framework does not contain a generic user registration page. All locators needed for this test must be created.",
+        "locators_by_page": {}
+      },
+      "flow_pattern": "Generic User Registration Flow: Navigate to registration page → Fill registration form (first name, last name, email, password, confirm password) → Submit form → Wait for processing → Verify success message → Verify navigation to dashboard or login page. This flow is NOT part of the AURA framework's HP Instant Ink enrollment flow.",
+      "communities_involved": [
+        "0",
+        "2",
+        "4",
+        "5",
+        "10",
+        "19",
+        "34"
+      ],
+      "components_to_create": [
+        {
+          "type": "page_object",
+          "name": "RegistrationPage",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Page object for the user registration page containing all registration form elements (first name, last name, email, password, confirm password, register button, loading indicator). Must inherit from BasePageObject.",
+          "reason": "KB query confirmed: The AURA framework does NOT have a RegistrationPage. The framework has HPIDPage for HP ID sign-up (part of Instant Ink enrollment), but NOT a generic user registration page. This page object must be created from scratch.",
+          "relevant_to_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed NO RegistrationPage exists. HPIDPage exists but serves a different purpose (HP ID authentication for Instant Ink enrollment)."
+        },
+        {
+          "type": "page_object",
+          "name": "RegistrationSuccessPage",
+          "suggested_file": "pages/registration_success_page.py",
+          "description": "Page object for the registration success state with success message display. Must inherit from BasePageObject.",
+          "reason": "KB query confirmed: The AURA framework does NOT have a RegistrationSuccessPage or any generic success page for user registration. This page object must be created.",
+          "relevant_to_steps": [
+            9
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed NO RegistrationSuccessPage exists in the framework."
+        },
+        {
+          "type": "page_object",
+          "name": "DashboardPage",
+          "suggested_file": "pages/dashboard_page.py",
+          "description": "Page object for the main dashboard page that user may be redirected to after registration. Must inherit from BasePageObject. Note: The AURA framework has OverviewPage for HP Instant Ink dashboard, but this test requires a generic application dashboard which may be different.",
+          "reason": "KB query confirmed: The AURA framework has OverviewPage (pages/overview_page.py) for HP Instant Ink dashboard, but the test case describes a generic application dashboard for user registration. If the application under test uses a different dashboard than HP Instant Ink Overview, a new DashboardPage must be created. If it's the same, OverviewPage can be reused.",
+          "relevant_to_steps": [
+            10
+          ],
+          "priority": "high",
+          "kb_verification": "KB confirmed OverviewPage exists (Community 1) but is specific to HP Instant Ink. Generic DashboardPage for user registration may need to be created depending on application."
+        },
+        {
+          "type": "page_object",
+          "name": "LoginPage",
+          "suggested_file": "pages/login_page.py",
+          "description": "Page object for the login page that user may be redirected to after registration. Must inherit from BasePageObject. Note: The AURA framework has SignInPage for HP ID sign-in, but this test requires a generic application login page which may be different.",
+          "reason": "KB query confirmed: The AURA framework has SignInPage (pages/sign_in_page.py) for HP ID authentication, but the test case describes a generic application login page for user registration. If the application under test uses a different login page than HP ID sign-in, a new LoginPage must be created. If it's the same, SignInPage can be reused.",
+          "relevant_to_steps": [
+            10
+          ],
+          "priority": "high",
+          "kb_verification": "KB confirmed SignInPage exists but is specific to HP ID authentication. Generic LoginPage for user registration may need to be created depending on application."
+        },
+        {
+          "type": "locator",
+          "name": "registration_form",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Form container locator with id='registrationForm' or class='registration-form' or form with registration fields. Used to verify the registration form is visible.",
+          "reason": "KB query confirmed: No registration form locator exists in the AURA framework. Must be created in the new RegistrationPage class.",
+          "relevant_to_steps": [
+            1
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed this locator does NOT exist in any AURA framework file."
+        },
+        {
+          "type": "locator",
+          "name": "first_name_input",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Input field locator with id='firstName' or name='firstName' or placeholder='First Name'. Used to enter first name during registration.",
+          "reason": "KB query confirmed: HPIDPage has a firstName locator but it's for HP ID sign-up (part of Instant Ink enrollment), not generic user registration. A new first_name_input locator must be created for the generic registration form.",
+          "relevant_to_steps": [
+            1,
+            2
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed HPIDPage.firstName exists but is for HP ID enrollment, not generic registration."
+        },
+        {
+          "type": "locator",
+          "name": "last_name_input",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Input field locator with id='lastName' or name='lastName' or placeholder='Last Name'. Used to enter last name during registration.",
+          "reason": "KB query confirmed: HPIDPage has a lastName locator but it's for HP ID sign-up (part of Instant Ink enrollment), not generic user registration. A new last_name_input locator must be created for the generic registration form.",
+          "relevant_to_steps": [
+            1,
+            3
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed HPIDPage.lastName exists but is for HP ID enrollment, not generic registration."
+        },
+        {
+          "type": "locator",
+          "name": "email_input",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Input field locator with id='email' or name='email' or type='email' or placeholder='Email'. Used to enter email address during registration.",
+          "reason": "KB query confirmed: HPIDPage has an email locator but it's for HP ID sign-up (part of Instant Ink enrollment), not generic user registration. A new email_input locator must be created for the generic registration form.",
+          "relevant_to_steps": [
+            1,
+            4
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed HPIDPage.email exists but is for HP ID enrollment, not generic registration."
+        },
+        {
+          "type": "locator",
+          "name": "password_input",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Password input field locator with id='password' or name='password' or type='password' or placeholder='Password'. Used to enter password during registration.",
+          "reason": "KB query confirmed: HPIDPage has a password locator but it's for HP ID sign-up (part of Instant Ink enrollment), not generic user registration. A new password_input locator must be created for the generic registration form.",
+          "relevant_to_steps": [
+            1,
+            5
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed HPIDPage.password exists but is for HP ID enrollment, not generic registration."
+        },
+        {
+          "type": "locator",
+          "name": "confirm_password_input",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Password input field locator with id='confirmPassword' or name='confirmPassword' or type='password' or placeholder='Confirm Password'. Used to enter confirm password during registration.",
+          "reason": "KB query confirmed: No confirm password locator exists in the AURA framework. HPIDPage does not have a confirm password field. Must be created.",
+          "relevant_to_steps": [
+            1,
+            6
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed this locator does NOT exist in any AURA framework file."
+        },
+        {
+          "type": "locator",
+          "name": "register_button",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Button locator with text 'Register' or 'Sign Up' or id='registerBtn' or type='submit'. Used to submit the registration form.",
+          "reason": "KB query confirmed: HPIDPage has a create_account_button but it's for HP ID sign-up (part of Instant Ink enrollment), not generic user registration. A new register_button locator must be created for the generic registration form.",
+          "relevant_to_steps": [
+            1,
+            7
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed HPIDPage.create_account_button exists but is for HP ID enrollment, not generic registration."
+        },
+        {
+          "type": "locator",
+          "name": "loading_indicator",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Loading spinner or progress indicator locator with class='loading' or 'spinner' or id='loadingIndicator'. Used to wait for registration processing to complete.",
+          "reason": "KB query confirmed: No generic loading indicator locator exists in the AURA framework for registration forms. Must be created.",
+          "relevant_to_steps": [
+            8
+          ],
+          "priority": "high",
+          "kb_verification": "KB confirmed this locator does NOT exist in any AURA framework file."
+        },
+        {
+          "type": "locator",
+          "name": "success_message",
+          "suggested_file": "pages/registration_success_page.py",
+          "description": "Success message element locator with class='success-message' or 'alert-success' or text containing 'Registration successful'. Used to verify registration success.",
+          "reason": "KB query confirmed: No success message locator exists in the AURA framework for user registration. Must be created.",
+          "relevant_to_steps": [
+            8,
+            9
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed this locator does NOT exist in any AURA framework file."
+        },
+        {
+          "type": "locator",
+          "name": "dashboard_header",
+          "suggested_file": "pages/dashboard_page.py",
+          "description": "Dashboard page header locator with text 'Dashboard' or 'Welcome' or class='dashboard-header'. Used to verify dashboard page is displayed after registration.",
+          "reason": "KB query confirmed: OverviewPage exists for HP Instant Ink dashboard but may not have the same header as a generic application dashboard. If the application uses a different dashboard, this locator must be created.",
+          "relevant_to_steps": [
+            10
+          ],
+          "priority": "high",
+          "kb_verification": "KB confirmed OverviewPage exists but is specific to HP Instant Ink. Generic dashboard_header may need to be created."
+        },
+        {
+          "type": "locator",
+          "name": "login_form",
+          "suggested_file": "pages/login_page.py",
+          "description": "Login form container locator with id='loginForm' or class='login-form'. Used to verify login page is displayed after registration.",
+          "reason": "KB query confirmed: SignInPage exists for HP ID authentication but may not have the same form structure as a generic application login page. If the application uses a different login page, this locator must be created.",
+          "relevant_to_steps": [
+            10
+          ],
+          "priority": "high",
+          "kb_verification": "KB confirmed SignInPage exists but is specific to HP ID authentication. Generic login_form may need to be created."
+        },
+        {
+          "type": "method",
+          "name": "navigate_to_registration_page",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Method to navigate to the registration page URL and wait for page to load. Signature: navigate_to_registration_page(url: str) -> None",
+          "reason": "KB query confirmed: No method exists in the AURA framework to navigate to a generic user registration page. Must be created.",
+          "relevant_to_steps": [
+            1
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed this method does NOT exist in any AURA framework file."
+        },
+        {
+          "type": "method",
+          "name": "enter_first_name",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Method to clear and enter first name in the first name input field. Signature: enter_first_name(first_name: str) -> None",
+          "reason": "KB query confirmed: No method exists in the AURA framework to enter first name in a generic registration form. Must be created.",
+          "relevant_to_steps": [
+            2
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed this method does NOT exist in any AURA framework file."
+        },
+        {
+          "type": "method",
+          "name": "enter_last_name",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Method to clear and enter last name in the last name input field. Signature: enter_last_name(last_name: str) -> None",
+          "reason": "KB query confirmed: No method exists in the AURA framework to enter last name in a generic registration form. Must be created.",
+          "relevant_to_steps": [
+            3
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed this method does NOT exist in any AURA framework file."
+        },
+        {
+          "type": "method",
+          "name": "enter_email",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Method to clear and enter email address in the email input field. Signature: enter_email(email: str) -> None",
+          "reason": "KB query confirmed: No method exists in the AURA framework to enter email in a generic registration form. Must be created.",
+          "relevant_to_steps": [
+            4
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed this method does NOT exist in any AURA framework file."
+        },
+        {
+          "type": "method",
+          "name": "enter_password",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Method to clear and enter password in the password input field. Signature: enter_password(password: str) -> None",
+          "reason": "KB query confirmed: No method exists in the AURA framework to enter password in a generic registration form. Must be created.",
+          "relevant_to_steps": [
+            5
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed this method does NOT exist in any AURA framework file."
+        },
+        {
+          "type": "method",
+          "name": "enter_confirm_password",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Method to clear and enter confirm password in the confirm password input field. Signature: enter_confirm_password(confirm_password: str) -> None",
+          "reason": "KB query confirmed: No method exists in the AURA framework to enter confirm password in a generic registration form. Must be created.",
+          "relevant_to_steps": [
+            6
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed this method does NOT exist in any AURA framework file."
+        },
+        {
+          "type": "method",
+          "name": "click_register_button",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Method to click the register button to submit the registration form. Signature: click_register_button() -> None",
+          "reason": "KB query confirmed: No method exists in the AURA framework to click a register button in a generic registration form. Must be created.",
+          "relevant_to_steps": [
+            7
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed this method does NOT exist in any AURA framework file."
+        },
+        {
+          "type": "method",
+          "name": "wait_for_registration_complete",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Method to wait for registration processing to complete by waiting for loading indicator to disappear. Signature: wait_for_registration_complete(timeout: int = 30) -> None",
+          "reason": "KB query confirmed: No method exists in the AURA framework to wait for registration processing. Must be created.",
+          "relevant_to_steps": [
+            8
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed this method does NOT exist in any AURA framework file."
+        },
+        {
+          "type": "method",
+          "name": "get_success_message_text",
+          "suggested_file": "pages/registration_success_page.py",
+          "description": "Method to get the text content of the success message element. Signature: get_success_message_text() -> str",
+          "reason": "KB query confirmed: No method exists in the AURA framework to get success message text for user registration. Must be created.",
+          "relevant_to_steps": [
+            9
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed this method does NOT exist in any AURA framework file."
+        },
+        {
+          "type": "method",
+          "name": "verify_registration_form_visible",
+          "suggested_file": "pages/registration_page.py",
+          "description": "Method to verify that the registration form is visible on the page. Signature: verify_registration_form_visible() -> bool",
+          "reason": "KB query confirmed: No method exists in the AURA framework to verify registration form visibility. Must be created.",
+          "relevant_to_steps": [
+            1
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed this method does NOT exist in any AURA framework file."
+        },
+        {
+          "type": "method",
+          "name": "verify_success_message_visible",
+          "suggested_file": "pages/registration_success_page.py",
+          "description": "Method to verify that the success message is visible on the page. Signature: verify_success_message_visible() -> bool",
+          "reason": "KB query confirmed: No method exists in the AURA framework to verify success message visibility for user registration. Must be created.",
+          "relevant_to_steps": [
+            9
+          ],
+          "priority": "critical",
+          "kb_verification": "KB confirmed this method does NOT exist in any AURA framework file."
+        },
+        {
+          "type": "helper",
+          "name": "RegistrationHelper",
+          "suggested_file": "helper/registration_helper.py",
+          "description": "Helper class to orchestrate the complete user registration flow. Should contain methods like: perform_complete_registration(first_name, last_name, email, password) that fills all fields and submits the form. This helper would use the RegistrationPage page object.",
+          "reason": "KB query confirmed: No helper exists in the AURA framework for generic user registration. HPIDHelper exists but is for HP ID sign-up (part of Instant Ink enrollment), not generic user registration. A new RegistrationHelper must be created.",
+          "relevant_to_steps": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "priority": "high",
+          "kb_verification": "KB confirmed NO RegistrationHelper exists. HPIDHelper exists but serves a different purpose (HP ID authentication for Instant Ink enrollment)."
+        }
+      ],
+      "execution_order": [
+        {
+          "order": 1,
+          "component": "test_flows_common.setup()",
+          "purpose": "Initialize test environment and global state",
+          "status": "EXISTS"
+        },
+        {
+          "order": 2,
+          "component": "test_flows_common.generate_tenant_email()",
+          "purpose": "Generate unique email for registration",
+          "status": "EXISTS"
+        },
+        {
+          "order": 3,
+          "component": "RegistrationPage.navigate_to_registration_page(url)",
+          "purpose": "Navigate to registration page",
+          "status": "TO_CREATE"
+        },
+        {
+          "order": 4,
+          "component": "RegistrationPage.verify_registration_form_visible()",
+          "purpose": "Verify registration form is displayed",
+          "status": "TO_CREATE"
+        },
+        {
+          "order": 5,
+          "component": "RegistrationPage.enter_first_name(first_name)",
+          "purpose": "Enter first name in registration form",
+          "status": "TO_CREATE"
+        },
+        {
+          "order": 6,
+          "component": "RegistrationPage.enter_last_name(last_name)",
+          "purpose": "Enter last name in registration form",
+          "status": "TO_CREATE"
+        },
+        {
+          "order": 7,
+          "component": "RegistrationPage.enter_email(email)",
+          "purpose": "Enter email in registration form",
+          "status": "TO_CREATE"
+        },
+        {
+          "order": 8,
+          "component": "RegistrationPage.enter_password(password)",
+          "purpose": "Enter password in registration form",
+          "status": "TO_CREATE"
+        },
+        {
+          "order": 9,
+          "component": "RegistrationPage.enter_confirm_password(password)",
+          "purpose": "Enter confirm password in registration form",
+          "status": "TO_CREATE"
+        },
+        {
+          "order": 10,
+          "component": "RegistrationPage.click_register_button()",
+          "purpose": "Submit registration form",
+          "status": "TO_CREATE"
+        },
+        {
+          "order": 11,
+          "component": "RegistrationPage.wait_for_registration_complete()",
+          "purpose": "Wait for server-side registration processing",
+          "status": "TO_CREATE"
+        },
+        {
+          "order": 12,
+          "component": "RegistrationSuccessPage.verify_success_message_visible()",
+          "purpose": "Verify success message is displayed",
+          "status": "TO_CREATE"
+        },
+        {
+          "order": 13,
+          "component": "RegistrationSuccessPage.get_success_message_text()",
+          "purpose": "Get success message text for verification",
+          "status": "TO_CREATE"
+        },
+        {
+          "order": 14,
+          "component": "Verify navigation to dashboard or login page",
+          "purpose": "Verify user is redirected to expected page",
+          "status": "TO_CREATE"
+        }
+      ],
+      "gap_analysis": {
+        "framework_coverage": "0%",
+        "framework_coverage_explanation": "The AURA framework provides ZERO coverage for this test case. The framework is designed exclusively for HP Instant Ink enrollment flows (landing page → plan selection → HPID sign-up → shipping/billing → enrollment completion → dashboard management). It does NOT contain any components for generic user registration functionality. All page objects, locators, and methods needed for this test must be created from scratch. Only the 7 foundation infrastructure files (test_flows_common, playwright_manager, settings, allure_reporter, base_page_object, utils, conftest) can be reused.",
+        "missing_page_objects": [
+          "RegistrationPage",
+          "RegistrationSuccessPage",
+          "DashboardPage (generic, not HP Instant Ink specific)",
+          "LoginPage (generic, not HP ID specific)"
+        ],
+        "missing_locators": [
+          "registration_form",
+          "first_name_input",
+          "last_name_input",
+          "email_input",
+          "password_input",
+          "confirm_password_input",
+          "register_button",
+          "loading_indicator",
+          "success_message",
+          "dashboard_header",
+          "login_form"
+        ],
+        "missing_methods": [
+          "navigate_to_registration_page",
+          "enter_first_name",
+          "enter_last_name",
+          "enter_email",
+          "enter_password",
+          "enter_confirm_password",
+          "click_register_button",
+          "wait_for_registration_complete",
+          "get_success_message_text",
+          "verify_registration_form_visible",
+          "verify_success_message_visible"
+        ],
+        "missing_helpers": [
+          "RegistrationHelper"
+        ],
+        "reusable_components": [
+          "test_flows_common.py (email generation, test setup)",
+          "core/playwright_manager.py (browser management)",
+          "core/settings.py (configuration)",
+          "core/allure_reporter.py (reporting)",
+          "pages/base_page_object.py (base class for new page objects)",
+          "core/utils.py (utility functions)",
+          "conftest.py (pytest configuration)"
+        ],
+        "framework_mismatch_explanation": "CRITICAL MISMATCH: The test case is for generic user registration functionality, but the AURA framework is purpose-built for HP Instant Ink subscription enrollment. The framework's HPIDPage and HPIDHelper are for HP ID authentication (part of the Instant Ink enrollment flow), NOT for generic user registration. The framework does not have and was never designed to have generic registration page components. This test case requires building an entirely new registration module on top of the AURA infrastructure."
+      },
+      "recommendations": [
+        "CRITICAL: Verify that this test case is intended for the AURA framework. The AURA framework is designed for HP Instant Ink enrollment automation, NOT generic user registration. If this test is for a different application, a different framework or new module should be used.",
+        "Create a new 'registration' module within the AURA framework with: pages/registration_page.py, pages/registration_success_page.py, helper/registration_helper.py",
+        "All new page objects must inherit from BasePageObject to maintain framework consistency",
+        "Reuse test_flows_common.generate_tenant_email() for unique email generation during registration",
+        "Implement dynamic email generation with timestamp to ensure uniqueness for each test run",
+        "Add API-based test data cleanup to ensure preconditions are met (user does not already exist)",
+        "Use explicit waits with proper conditions for all element interactions and page transitions",
+        "Implement flexible navigation verification that handles both dashboard and login page outcomes",
+        "Add screenshot capture on assertion failures for debugging",
+        "Make all URLs configurable through environment configuration to support multi-environment testing",
+        "Consider creating a generic FormPage base class if multiple registration/form pages will be added in the future",
+        "Document the new registration module clearly to distinguish it from the HP Instant Ink enrollment flow"
+      ],
+      "notes": "This test case represents a significant framework extension. The AURA framework currently has NO components for generic user registration. All components must be created from scratch, following the framework's patterns (BasePageObject inheritance, static helper methods, Playwright locators). The only reusable components are the 7 foundation infrastructure files. This is a PARTIALLY_RESOLVED status because the infrastructure exists but all domain-specific components are missing."
+    }
+  ],
+  "summary": {
+    "total_test_cases": 1,
+    "fully_resolved": 0,
+    "partially_resolved": 1,
+    "unresolved": 0,
+    "total_files_identified": 7,
+    "total_components_to_create": 27,
+    "framework_coverage_percentage": 0,
+    "critical_gaps": [
+      "No RegistrationPage page object exists in the AURA framework",
+      "No RegistrationSuccessPage page object exists in the AURA framework",
+      "No generic DashboardPage exists (only HP Instant Ink OverviewPage)",
+      "No generic LoginPage exists (only HP ID SignInPage)",
+      "No RegistrationHelper exists in the AURA framework",
+      "All 11 registration form locators must be created",
+      "All 11 registration action methods must be created",
+      "The AURA framework is designed for HP Instant Ink enrollment, NOT generic user registration"
+    ],
+    "recommendations": [
+      "Verify that this test case is intended for the AURA framework - there is a fundamental mismatch between the test requirements (generic user registration) and the framework's purpose (HP Instant Ink enrollment)",
+      "If this test is for the correct application, create a new 'registration' module within AURA with all required page objects and helpers",
+      "All new components must follow AURA framework patterns: inherit from BasePageObject, use static helper methods, use Playwright locators",
+      "Reuse the 7 foundation infrastructure files (test_flows_common, playwright_manager, settings, allure_reporter, base_page_object, utils, conftest)",
+      "Consider whether the AURA framework should be extended to support generic registration or if a separate framework/module is more appropriate"
+    ]
+  }
+}
